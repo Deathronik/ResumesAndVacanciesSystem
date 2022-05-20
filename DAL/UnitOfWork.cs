@@ -2,7 +2,7 @@
 
 namespace DAL
 {
-    class UnitOfWork
+    public class UnitOfWork
     {
         private MyDBContext DBContext = new MyDBContext();
         private IGenericRepository<Hirer> HirerRepository;
@@ -34,7 +34,7 @@ namespace DAL
                 WorkerRepository = new GenericRepository<Worker>(DBContext);
             return WorkerRepository;
         }
-        public void Sava()
+        public void Save()
         {
             DBContext.SaveChanges();
         }

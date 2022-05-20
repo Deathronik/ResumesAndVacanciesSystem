@@ -51,8 +51,11 @@
     <Compile Include="Entities\MResume.cs" />
     <Compile Include="Entities\MVacation.cs" />
     <Compile Include="Entities\MWorker.cs" />
-    <Compile Include="Logic.cs" />
+    <Compile Include="HirerLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResumeLogic.cs" />
+    <Compile Include="VacationLogic.cs" />
+    <Compile Include="WorkerLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

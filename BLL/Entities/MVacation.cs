@@ -6,15 +6,17 @@ namespace BLL.Entities
     {
         public int Id { get; set; }
         public string CompanyName { get; set; }
-        public string HirerNames { get; set; }
-        public string JobTitle { get; set; }
+        public string HirerNames { get; set; } // Прізвище + Ім'я роботодавця  + По батькові
+        public string JobTitle { get; set; } // Назва роботи
         public double Salary { get; set; }
-        public bool IsBonus { get; set; }
-        public int Experience { get; set; }
-        public bool IsHigherEducation { get; set; }
+        public bool IsBonus { get; set; } // Чи є премії і т.д.
+        public int Experience { get; set; } // Потрібний досвід роботи
+        public bool IsHigherEducation { get; set; } // Чи потрібна вища освіта
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
         public List<string> Description { get; set; }
         public string CityName { get; set; }
-        public string[][] WorkSchedule { get; set; }
+        public List<string> WorkSchedule { get; set; } // Графік роботи
         public int HirerId { get; set; }
         public int WorkerId { get; set; }
     }

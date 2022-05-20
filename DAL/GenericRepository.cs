@@ -34,14 +34,6 @@ namespace DAL
         {
             return DBSet.Find(id);
         }
-        public Entity GetDataAt(int num) // Повертає дані за порядковим номером
-        {
-            return GetData()[num];
-        }
-        public Entity GetDataAt(int num, params Expression<Func<Entity, object>>[] includeProperties)
-        {
-            return GetData(includeProperties)[num];
-        }
         public void RemoveAtId(int id)
         {
             DBSet.Remove(DBSet.Find(id));
