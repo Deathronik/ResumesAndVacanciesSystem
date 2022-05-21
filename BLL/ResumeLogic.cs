@@ -15,6 +15,10 @@ namespace BLL
         {
             UnitOFWork = unitOfWork;
         }
+        public List<MResume> GetAll()
+        {
+            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetData());
+        }
         public MResume GetById(int id)
         {
             return ResumeMap.Map<Resume, MResume>(UnitOFWork.Resume().FindById(id));
@@ -23,6 +27,56 @@ namespace BLL
         {
             UnitOFWork.Resume().RemoveAtId(id);
             UnitOFWork.Save();
+        }
+        // Повертає відфільтровані резюме (якщо в jobTitle передати "none", назва роботи не буде ураховуватись, якщо в offeredsalary передати 0 заробітня плата
+        // не буде ураховуватись, так само в experience, higherEducation відповідає чи потрібно шукати резюме в якій є вища освіта, якщо передати 
+        // true буде шукати з вищою освітою
+        public List<MResume> GetFilteredResume(string jobTitle, double offeredsalary, int experience, bool higherEducation)
+        {
+            bool isjobTitle, issalary, isexperience, isHigherEducation;
+            List<MResume> data = new List<MResume>();
+            foreach(MResume resume in ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetData()))
+            {
+                if (jobTitle != "none")
+                {
+                    if (jobTitle == resume.JobTitle)
+                        isjobTitle = true;
+                    else
+                        isjobTitle = false;
+                }
+                else
+                    isjobTitle = true;
+                if (offeredsalary != 0)
+                {
+                    if (offeredsalary <= resume.OfferedSalary)
+                        issalary = true;
+                    else
+                        issalary = false;
+                }
+                else
+                    issalary = true;
+                if (experience != 0)
+                {
+                    if (experience >= resume.Experience)
+                        isexperience = true;
+                    else
+                        isexperience = false;
+                }
+                else
+                    isexperience = true;
+                if (higherEducation)
+                {
+                    if (resume.IsHigherEducation)
+                        isHigherEducation = true;
+                    else
+                        isHigherEducation = false;
+                }
+                else
+                    isHigherEducation = true;
+                if (isjobTitle && issalary && isexperience && isHigherEducation)
+                    data.Add(resume);
+            }
+            return data;
         }
         public List<string> GetAllInfo()
         {

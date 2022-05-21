@@ -14,6 +14,10 @@ namespace BLL
         {
             UnitOFWork = unitOfWork;
         }
+        public List<MWorker> GetAll()
+        {
+            return WorkerMap.Map<List<Worker>, List<MWorker>>(UnitOFWork.Worker().GetData());
+        }
         public MWorker GetById(int id)
         {
             return WorkerMap.Map<Worker, MWorker>(UnitOFWork.Worker().FindById(id));

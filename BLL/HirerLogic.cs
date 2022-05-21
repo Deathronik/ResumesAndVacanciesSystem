@@ -15,6 +15,10 @@ namespace BLL
         {
             UnitOFWork = unitOfWork;
         }
+        public List<MHirer> GetAll()
+        {
+            return HirerMap.Map<List<Hirer>, List<MHirer>>(UnitOFWork.Hirer().GetData());
+        }
         public MHirer GetById(int id)
         {
             return HirerMap.Map<Hirer, MHirer>(UnitOFWork.Hirer().FindById(id));
