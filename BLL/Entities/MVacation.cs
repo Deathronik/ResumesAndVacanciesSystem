@@ -2,7 +2,7 @@
 
 namespace BLL.Entities
 {
-    class MVacation
+    public class MVacation
     {
         public int Id { get; set; }
         public string CompanyName { get; set; }
@@ -18,6 +18,6 @@ namespace BLL.Entities
         public string CityName { get; set; }
         public List<string> WorkSchedule { get; set; } // Графік роботи
         public int HirerId { get; set; }
-        public int WorkerId { get; set; }
+        public List<int> WorkerId { get; set; }
     }
 }

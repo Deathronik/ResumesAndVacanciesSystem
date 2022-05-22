@@ -18,6 +18,6 @@ namespace DAL.Models
         public string CityName { get; set; }
         public List<string> WorkSchedule { get; set; }
         public int HirerId { get; set; }
-        public int WorkerId { get; set; }
+        public List<int> WorkerId { get; set; }
     }
 }

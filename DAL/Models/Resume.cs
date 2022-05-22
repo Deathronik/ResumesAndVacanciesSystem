@@ -16,5 +16,6 @@ namespace DAL.Models
         public List<string> Description { get; set; }
         public List<string> CharacterInfo { get; set; }
         public int WorkerId { get; set; }
+        public List<int> HirerId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BLL.Entities
 {
-    class MHirer
+    public class MHirer
     {
         public int Id { get; set; }
         public string CompanyName { get; set; }

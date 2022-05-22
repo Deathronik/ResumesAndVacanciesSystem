@@ -6,7 +6,7 @@ using DAL.Models;
 
 namespace BLL
 {
-    class WorkerLogic
+    public class WorkerLogic
     {
         private IMapper WorkerMap = new MapperConfiguration(cfg => cfg.CreateMap<Worker, MWorker>()).CreateMapper();
         private UnitOfWork UnitOFWork;
@@ -29,26 +29,27 @@ namespace BLL
             UnitOFWork.Worker().RemoveAtId(id);
             UnitOFWork.Save();
         }
-        public List<MVacation> GetOferedVacations(int workerId) // Повертає список всіх запропонованих ваканцій даного працівника
+        public void Change(MWorker worker)
         {
-            return WorkerMap.Map<Worker, MWorker>(UnitOFWork.Worker().FindById(workerId)).Vacations;
-        }
-        public void OfferResume(int resumeId, int hirerId) // Передає роботодавцю резюме
-        {
-            UnitOFWork.Hirer().FindById(hirerId).Resume.Add(UnitOFWork.Resume().FindById(resumeId));
+            UnitOFWork.Worker().Update(new Worker()
+            {
+                Id = worker.Id,
+                Names = worker.Names,
+                PhoneNumber = worker.PhoneNumber,
+                Email = worker.Email,
+                DateOfBirth = worker.DateOfBirth,
+                Resumes = WorkerMap.Map<List<Resume>>(worker.Resumes),
+                Vacations = WorkerMap.Map<List<Vacation>>(worker.Vacations)
+            });
             UnitOFWork.Save();
-        }
-        public List<MResume> GetWorkerResumes(int workerId) // Повертає список всіх резюме даного працівника
-        {
-            return WorkerMap.Map<Worker, MWorker>(UnitOFWork.Worker().FindById(workerId)).Resumes;
         }
         public void CreateResume(int workerID, string jobTitle, double offeredSalary, int experience, bool isHigherEducation, 
             List<string> description, List<string> characterInfo)
         {
             MWorker worker = GetById(workerID);
-            WorkerMap.Map<Worker>(UnitOFWork.Worker().FindById(workerID)).Resumes.Add(new Resume() 
-            { 
-                UserNames = worker.Names, 
+            UnitOFWork.Resume().Add(new Resume()
+            {
+                UserNames = worker.Names,
                 JobTitle = jobTitle,
                 OfferedSalary = offeredSalary,
                 DateOfBirth = worker.DateOfBirth,
@@ -57,7 +58,8 @@ namespace BLL
                 PhoneNumber = worker.PhoneNumber,
                 Email = worker.Email,
                 Description = description,
-                CharacterInfo = characterInfo
+                CharacterInfo = characterInfo,
+                WorkerId = worker.Id
             });
             UnitOFWork.Save();
         }

@@ -10,6 +10,8 @@ namespace DAL
         List<Entity> GetData();
         List<Entity> GetData(params Expression<Func<Entity, object>>[] includeProperties);
         Entity FindById(int id);
+        List<Entity> GetByFunc(Func<Entity, bool> predicate);
         void RemoveAtId(int id);
+        void Update(Entity item);
     }
 }

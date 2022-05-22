@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using System.Data.Entity.Migrations;
 
 namespace DAL
 {
     class GenericRepository<Entity> : IGenericRepository<Entity> where Entity : class
     {
         private DbSet<Entity> DBSet;
+        private DbContext Context;
         public GenericRepository(DbContext context)
         {
             DBSet = context.Set<Entity>();
+            Context = context;
         }
         public void Add(Entity data)
         {
@@ -34,9 +37,18 @@ namespace DAL
         {
             return DBSet.Find(id);
         }
+        public List<Entity> GetByFunc(Func<Entity, bool> predicate)
+        {
+            return DBSet.AsNoTracking().Where(predicate).ToList();
+        }
         public void RemoveAtId(int id)
         {
             DBSet.Remove(DBSet.Find(id));
+        }
+        public void Update(Entity item)
+        {
+            DBSet.AsNoTracking();
+            Context.Set<Entity>().AddOrUpdate(item);
         }
     }
 }

@@ -6,7 +6,7 @@ using DAL.Models;
 
 namespace BLL
 {
-    class HirerLogic
+    public class HirerLogic
     {
         private IMapper HirerMap = new MapperConfiguration(cfg => cfg.CreateMap<Hirer, MHirer>()).CreateMapper();
         private UnitOfWork UnitOFWork;
@@ -30,18 +30,19 @@ namespace BLL
             UnitOFWork.Hirer().RemoveAtId(id);
             UnitOFWork.Save();
         }
-        public List<MResume> GetOferedResumes(int hirerId) // Повертає список всіх запропонованих резюме даного роботодавця
+        public void Change(MHirer hirer)
         {
-            return HirerMap.Map<Hirer, MHirer>(UnitOFWork.Hirer().FindById(hirerId)).Resume;
-        }
-        public void OfferVacation(int vacationId, int workerId) // Передає працівнику ваканцію
-        {
-            UnitOFWork.Worker().FindById(workerId).Vacations.Add(UnitOFWork.Vacation().FindById(vacationId));
+            UnitOFWork.Hirer().Update(new Hirer()
+            {
+                Id = hirer.Id,
+                CompanyName = hirer.CompanyName,
+                Names = hirer.Names,
+                PhoneNumber = hirer.PhoneNumber,
+                Email = hirer.Email,
+                Vacations = HirerMap.Map<List<Vacation>>(hirer.Vacations),
+                Resume = HirerMap.Map<List<Resume>>(hirer.Resume)
+            });
             UnitOFWork.Save();
-        }
-        public List<MVacation> GetHirerVacations(int hirerId) // Повертає список всіх ваканцій даного роботодавця
-        {
-            return HirerMap.Map<Hirer, MHirer>(UnitOFWork.Hirer().FindById(hirerId)).Vacations;
         }
         public void CreateVacation(int hirerID, string jobTitle, double salary, bool isBonus, int experience, bool isHigherEducation, 
             List<string> description, string cityName, List<string> workSchedule)

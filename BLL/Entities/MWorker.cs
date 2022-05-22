@@ -2,7 +2,7 @@
 
 namespace BLL.Entities
 {
-    class MWorker
+    public class MWorker
     {
         public int Id { get; set; }
         public string Names { get; set; } // Прізвище + Ім'я + По батькові

@@ -6,7 +6,7 @@ using DAL.Models;
 
 namespace BLL
 {
-    class VacationLogic
+    public class VacationLogic
     {
         private IMapper VacationMap = new MapperConfiguration(cfg => cfg.CreateMap<Vacation, MVacation>()).CreateMapper();
         private UnitOfWork UnitOFWork;
@@ -27,6 +27,41 @@ namespace BLL
         {
             UnitOFWork.Vacation().RemoveAtId(id);
             UnitOFWork.Save();
+        }
+        public void Change(MVacation vacation)
+        {
+            UnitOFWork.Vacation().Update(new Vacation()
+            {
+                Id = vacation.Id,
+                CompanyName = vacation.CompanyName,
+                HirerNames = vacation.HirerNames,
+                JobTitle = vacation.JobTitle,
+                Salary = vacation.Salary,
+                IsBonus = vacation.IsBonus,
+                Experience = vacation.Experience,
+                IsHigherEducation = vacation.IsHigherEducation,
+                PhoneNumber = vacation.PhoneNumber,
+                Email = vacation.Email,
+                Description = vacation.Description,
+                CityName = vacation.CityName,
+                WorkSchedule = vacation.WorkSchedule,
+                HirerId = vacation.HirerId,
+                WorkerId = vacation.WorkerId
+            });
+            UnitOFWork.Save();
+        }
+        public void OfferVacation(int vacationId, int workerId) // Передає працівнику ваканцію, використовується тільки роботодавцем
+        {
+            UnitOFWork.Vacation().FindById(vacationId).WorkerId.Add(workerId);
+            UnitOFWork.Save();
+        }
+        public List<MVacation> GetHirerVacations(int hirerId) // Повертає список всіх ваканцій даного роботодавця
+        {
+            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetByFunc(x => x.HirerId == hirerId));
+        }
+        public List<MVacation> GetOferedVacations(int workerId) // Повертає список всіх запропонованих ваканцій даного працівника
+        {
+            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetByFunc(x => x.WorkerId.Contains(workerId)));
         }
         // Повертає відфільтровані ваканції (якщо в jobTitle передати "none", назва роботи не буде ураховуватись, якщо в salary передати 0 заробітня плата
         // не буде ураховуватись, так само в experience, noHigherEducation відповідає чи потрібно шукати ваканцію в якій не потрібна вища освіта, якщо передати 

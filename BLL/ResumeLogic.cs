@@ -6,7 +6,7 @@ using DAL.Models;
 
 namespace BLL
 {
-    class ResumeLogic
+    public class ResumeLogic
     {
         private IMapper ResumeMap = new MapperConfiguration(cfg => cfg.CreateMap<Resume, MResume>()).CreateMapper();
         private UnitOfWork UnitOFWork;
@@ -27,6 +27,39 @@ namespace BLL
         {
             UnitOFWork.Resume().RemoveAtId(id);
             UnitOFWork.Save();
+        }
+        public void Change(Resume resume)
+        {
+            UnitOFWork.Resume().Update(new Resume()
+            {
+                Id = resume.Id,
+                UserNames = resume.UserNames,
+                JobTitle = resume.JobTitle,
+                OfferedSalary = resume.OfferedSalary,
+                DateOfBirth = resume.DateOfBirth,
+                Experience = resume.Experience,
+                IsHigherEducation = resume.IsHigherEducation,
+                PhoneNumber = resume.PhoneNumber,
+                Email = resume.Email,
+                Description = resume.Description,
+                CharacterInfo = resume.CharacterInfo,
+                WorkerId = resume.WorkerId,
+                HirerId = resume.HirerId
+            });
+            UnitOFWork.Save();
+        }
+        public void OfferResume(int resumeId, int hirerId) // Передає роботодавцю резюме, використовується тільки працівником
+        {
+            UnitOFWork.Resume().FindById(resumeId).HirerId.Add(hirerId);
+            UnitOFWork.Save();
+        }
+        public List<MResume> GetOferedResumes(int hirerId) // Повертає список всіх запропонованих резюме даного роботодавця
+        {
+            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetByFunc(x => x.HirerId.Contains(hirerId)));
+        }
+        public List<MResume> GetWorkerResumes(int workerId) // Повертає список всіх резюме даного працівника
+        {
+            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetByFunc(x => x.WorkerId == workerId));
         }
         // Повертає відфільтровані резюме (якщо в jobTitle передати "none", назва роботи не буде ураховуватись, якщо в offeredsalary передати 0 заробітня плата
         // не буде ураховуватись, так само в experience, higherEducation відповідає чи потрібно шукати резюме в якій є вища освіта, якщо передати 

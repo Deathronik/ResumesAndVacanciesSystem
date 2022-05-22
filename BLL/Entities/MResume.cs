@@ -2,7 +2,7 @@
 
 namespace BLL.Entities
 {
-    class MResume
+    public class MResume
     {
         public int Id { get; set; }
         public string UserNames { get; set; } // Прізвище + Ім'я  + По батькові
@@ -16,6 +16,6 @@ namespace BLL.Entities
         public List<string> Description { get; set; } // Описується де і коли працював/отримав освіту + біографія
         public List<string> CharacterInfo { get; set; } // Характеристика людини
         public int WorkerId { get; set; }
-        public int HirerId { get; set; }
+        public List<int> HirerId { get; set; }
     }
 }
