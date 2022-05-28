@@ -1,11 +1,11 @@
-﻿using System.Data.Entity;
-using DAL.Models;
+﻿using DAL.Models;
+using System.Data.Entity;
 
 namespace DAL
 {
-    class MyDBContext : DbContext
+    public class ResumesAndVacanciesSystemContext : DbContext
     {
-        public MyDBContext() : base("MyDB")
+        public ResumesAndVacanciesSystemContext() : base("MyDB")
         { }
         public DbSet<Hirer> Hirers { get; set; }
         public DbSet<Resume> Resume { get; set; }
