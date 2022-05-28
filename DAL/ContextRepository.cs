@@ -7,11 +7,11 @@ using System.Data.Entity.Migrations;
 
 namespace DAL
 {
-    class GenericRepository<Entity> : IGenericRepository<Entity> where Entity : class
+    class ContextRepository<Entity> : IGenericRepository<Entity> where Entity : class
     {
         private DbSet<Entity> DBSet;
         private DbContext Context;
-        public GenericRepository(DbContext context)
+        public ContextRepository(DbContext context)
         {
             DBSet = context.Set<Entity>();
             Context = context;

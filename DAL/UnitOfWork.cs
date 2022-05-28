@@ -1,42 +1,46 @@
 ﻿using DAL.Models;
+using System;
 
 namespace DAL
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
-        private MyDBContext DBContext = new MyDBContext();
-        private IGenericRepository<Hirer> HirerRepository;
-        private IGenericRepository<Resume> ResumeRepository;
-        private IGenericRepository<Vacation> VacationRepository;
-        private IGenericRepository<Worker> WorkerRepository;
+        private readonly ResumesAndVacanciesSystemContext DBContext;
+        public IGenericRepository<Hirer> Hirer { get; }
+        public IGenericRepository<Resume> Resume { get; }
+        public IGenericRepository<Vacation> Vacation { get; }
+        public IGenericRepository<Worker> Worker { get; }
 
-        public IGenericRepository<Hirer> Hirer()
+        private bool Disposed;
+        public UnitOfWork(ResumesAndVacanciesSystemContext dbContext, IGenericRepository<Hirer> hirerRepository, IGenericRepository<Resume> resumeRepository, IGenericRepository<Vacation> vacationRepository,
+        IGenericRepository<Worker> workerRepository)
         {
-            if (HirerRepository == null)
-                HirerRepository = new GenericRepository<Hirer>(DBContext);
-            return HirerRepository;
+            DBContext = dbContext;
+            Hirer = hirerRepository;
+            Resume = resumeRepository;
+            Vacation = vacationRepository;
+            Worker = workerRepository;
         }
-        public IGenericRepository<Resume> Resume()
+        protected virtual void Dispose(bool disposing)
         {
-            if (ResumeRepository == null)
-                ResumeRepository = new GenericRepository<Resume>(DBContext);
-            return ResumeRepository;
+            if (Disposed) return;
+            if (disposing)
+                DBContext.Dispose();
+            Disposed = true;
         }
-        public IGenericRepository<Vacation> Vacation()
+        public void Dispose()
         {
-            if (VacationRepository == null)
-                VacationRepository = new GenericRepository<Vacation>(DBContext);
-            return VacationRepository;
-        }
-        public IGenericRepository<Worker> Worker()
-        {
-            if (WorkerRepository == null)
-                WorkerRepository = new GenericRepository<Worker>(DBContext);
-            return WorkerRepository;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         public void Save()
         {
-            DBContext.SaveChanges();
+            bool saveFailed;
+            do
+            {
+                saveFailed = false;
+                DBContext.SaveChanges();
+            } while (saveFailed);
         }
     }
 }

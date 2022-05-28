@@ -3,36 +3,37 @@ using DAL;
 using AutoMapper;
 using BLL.Entities;
 using DAL.Models;
+using BLL.Interfaces;
 
-namespace BLL
+namespace BLL.Logics
 {
-    public class HirerLogic
+    public class HirerLogic : IHirerLogic
     {
         private IMapper HirerMap = new MapperConfiguration(cfg => cfg.CreateMap<Hirer, MHirer>()).CreateMapper();
-        private UnitOfWork UnitOFWork;
+        private IUnitOfWork UnitOFWork;
 
-        public HirerLogic(UnitOfWork unitOfWork)
+        public HirerLogic(IUnitOfWork unitOfWork)
         {
             UnitOFWork = unitOfWork;
         }
         public List<MHirer> GetAll()
         {
-            return HirerMap.Map<List<Hirer>, List<MHirer>>(UnitOFWork.Hirer().GetData());
+            return HirerMap.Map<List<Hirer>, List<MHirer>>(UnitOFWork.Hirer.GetData());
         }
         public MHirer GetById(int id)
         {
-            return HirerMap.Map<Hirer, MHirer>(UnitOFWork.Hirer().FindById(id));
+            return HirerMap.Map<Hirer, MHirer>(UnitOFWork.Hirer.FindById(id));
         }
         public void DeleteById(int id)
         {
             foreach (MVacation vacation in GetById(id).Vacations)
-                UnitOFWork.Vacation().RemoveAtId(vacation.Id);
-            UnitOFWork.Hirer().RemoveAtId(id);
+                UnitOFWork.Vacation.RemoveAtId(vacation.Id);
+            UnitOFWork.Hirer.RemoveAtId(id);
             UnitOFWork.Save();
         }
         public void Change(MHirer hirer)
         {
-            UnitOFWork.Hirer().Update(new Hirer()
+            UnitOFWork.Hirer.Update(new Hirer()
             {
                 Id = hirer.Id,
                 CompanyName = hirer.CompanyName,
@@ -44,41 +45,40 @@ namespace BLL
             });
             UnitOFWork.Save();
         }
-        public void CreateVacation(int hirerID, string jobTitle, double salary, bool isBonus, int experience, bool isHigherEducation, 
-            List<string> description, string cityName, List<string> workSchedule)
+        public void CreateVacation(int hirerID, MVacation vacation)
         {
             MHirer hirer = GetById(hirerID);
-            HirerMap.Map<Hirer>(UnitOFWork.Hirer().FindById(hirerID)).Vacations.Add(new Vacation()
+            HirerMap.Map<Hirer>(UnitOFWork.Hirer.FindById(hirerID)).Vacations.Add(new Vacation()
             {
                 CompanyName = hirer.CompanyName,
                 HirerNames = hirer.Names,
-                JobTitle = jobTitle,
-                Salary = salary,
-                IsBonus = isBonus,
-                Experience = experience,
-                IsHigherEducation = isHigherEducation,
+                JobTitle = vacation.JobTitle,
+                Salary = vacation.Salary,
+                IsBonus = vacation.IsBonus,
+                Experience = vacation.Experience,
+                IsHigherEducation = vacation.IsHigherEducation,
                 PhoneNumber = hirer.PhoneNumber,
                 Email = hirer.Email,
-                Description = description,
-                CityName = cityName,
-                WorkSchedule = workSchedule
+                Description = vacation.Description,
+                CityName = vacation.CityName,
+                WorkSchedule = vacation.WorkSchedule
             });
             UnitOFWork.Save();
         }
-        public void Create(string companyName, string names, string phoneNumber, string email)
+        public void Create(MHirer hirer)
         {
-            UnitOFWork.Hirer().Add(new Hirer() 
+            UnitOFWork.Hirer.Add(new Hirer() 
             {
-                CompanyName = companyName,
-                Names = names,
-                PhoneNumber = phoneNumber,
-                Email = email,
+                CompanyName = hirer.CompanyName,
+                Names = hirer.Names,
+                PhoneNumber = hirer.PhoneNumber,
+                Email = hirer.Email,
                 Vacations = new List<Vacation>(),
                 Resume = new List<Resume>()
             });
             UnitOFWork.Save();
         }
-        public static List<string> GetInfo(MHirer hirer)
+        public List<string> GetInfo(MHirer hirer)
         {
             List<string> data = new List<string>();
             data.Add("Роботодавець: " + hirer.Names);

@@ -3,35 +3,36 @@ using DAL;
 using AutoMapper;
 using BLL.Entities;
 using DAL.Models;
+using BLL.Interfaces;
 
-namespace BLL
+namespace BLL.Logics
 {
-    public class WorkerLogic
+    public class WorkerLogic : IWorkerLogic
     {
         private IMapper WorkerMap = new MapperConfiguration(cfg => cfg.CreateMap<Worker, MWorker>()).CreateMapper();
-        private UnitOfWork UnitOFWork;
-        public WorkerLogic(UnitOfWork unitOfWork)
+        private IUnitOfWork UnitOFWork;
+        public WorkerLogic(IUnitOfWork unitOfWork)
         {
             UnitOFWork = unitOfWork;
         }
         public List<MWorker> GetAll()
         {
-            return WorkerMap.Map<List<Worker>, List<MWorker>>(UnitOFWork.Worker().GetData());
+            return WorkerMap.Map<List<Worker>, List<MWorker>>(UnitOFWork.Worker.GetData());
         }
         public MWorker GetById(int id)
         {
-            return WorkerMap.Map<Worker, MWorker>(UnitOFWork.Worker().FindById(id));
+            return WorkerMap.Map<Worker, MWorker>(UnitOFWork.Worker.FindById(id));
         }
         public void DeleteById(int id)
         {
             foreach (MResume resume in GetById(id).Resumes)
-                UnitOFWork.Resume().RemoveAtId(resume.Id);
-            UnitOFWork.Worker().RemoveAtId(id);
+                UnitOFWork.Resume.RemoveAtId(resume.Id);
+            UnitOFWork.Worker.RemoveAtId(id);
             UnitOFWork.Save();
         }
         public void Change(MWorker worker)
         {
-            UnitOFWork.Worker().Update(new Worker()
+            UnitOFWork.Worker.Update(new Worker
             {
                 Id = worker.Id,
                 Names = worker.Names,
@@ -43,40 +44,39 @@ namespace BLL
             });
             UnitOFWork.Save();
         }
-        public void CreateResume(int workerID, string jobTitle, double offeredSalary, int experience, bool isHigherEducation, 
-            List<string> description, List<string> characterInfo)
+        public void CreateResume(int workerID, MResume resume)
         {
             MWorker worker = GetById(workerID);
-            UnitOFWork.Resume().Add(new Resume()
+            UnitOFWork.Resume.Add(new Resume()
             {
                 UserNames = worker.Names,
-                JobTitle = jobTitle,
-                OfferedSalary = offeredSalary,
+                JobTitle = resume.JobTitle,
+                OfferedSalary = resume.OfferedSalary,
                 DateOfBirth = worker.DateOfBirth,
-                Experience = experience,
-                IsHigherEducation = isHigherEducation,
+                Experience = resume.Experience,
+                IsHigherEducation = resume.IsHigherEducation,
                 PhoneNumber = worker.PhoneNumber,
                 Email = worker.Email,
-                Description = description,
-                CharacterInfo = characterInfo,
+                Description = resume.Description,
+                CharacterInfo = resume.CharacterInfo,
                 WorkerId = worker.Id
             });
             UnitOFWork.Save();
         }
-        public void Create(string names, string phoneNumber, string email, string dateOfBirth)
+        public void Create(MWorker worker)
         {
-            UnitOFWork.Worker().Add(new Worker()
+            UnitOFWork.Worker.Add(new Worker
             {
-                Names = names,
-                PhoneNumber = phoneNumber,
-                Email = email,
-                DateOfBirth = dateOfBirth,
+                Names = worker.Names,
+                PhoneNumber = worker.PhoneNumber,
+                Email = worker.Email,
+                DateOfBirth = worker.DateOfBirth,
                 Resumes = new List<Resume>(),
                 Vacations = new List<Vacation>()
             });
             UnitOFWork.Save();
         }
-        public static List<string> GetWorkerInfo(MWorker worker)
+        public List<string> GetWorkerInfo(MWorker worker)
         {
             List<string> data = new List<string>();
             data.Add("Працівник: " + worker.Names);

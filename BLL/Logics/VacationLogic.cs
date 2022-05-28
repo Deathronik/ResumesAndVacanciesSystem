@@ -3,34 +3,35 @@ using DAL;
 using AutoMapper;
 using BLL.Entities;
 using DAL.Models;
+using BLL.Interfaces;
 
-namespace BLL
+namespace BLL.Logics
 {
-    public class VacationLogic
+    public class VacationLogic : IVacationLogic
     {
         private IMapper VacationMap = new MapperConfiguration(cfg => cfg.CreateMap<Vacation, MVacation>()).CreateMapper();
-        private UnitOfWork UnitOFWork;
+        private IUnitOfWork UnitOFWork;
 
-        public VacationLogic(UnitOfWork unitOfWork)
+        public VacationLogic(IUnitOfWork unitOfWork)
         {
             UnitOFWork = unitOfWork;
         }
         public List<MVacation> GetAll()
         {
-            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetData());
+            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation.GetData());
         }
         public MVacation GetById(int id)
         {
-            return VacationMap.Map<Vacation, MVacation>(UnitOFWork.Vacation().FindById(id));
+            return VacationMap.Map<Vacation, MVacation>(UnitOFWork.Vacation.FindById(id));
         }
         public void DeleteById(int id)
         {
-            UnitOFWork.Vacation().RemoveAtId(id);
+            UnitOFWork.Vacation.RemoveAtId(id);
             UnitOFWork.Save();
         }
         public void Change(MVacation vacation)
         {
-            UnitOFWork.Vacation().Update(new Vacation()
+            UnitOFWork.Vacation.Update(new Vacation
             {
                 Id = vacation.Id,
                 CompanyName = vacation.CompanyName,
@@ -52,16 +53,16 @@ namespace BLL
         }
         public void OfferVacation(int vacationId, int workerId) // Передає працівнику ваканцію, використовується тільки роботодавцем
         {
-            UnitOFWork.Vacation().FindById(vacationId).WorkerId.Add(workerId);
+            UnitOFWork.Vacation.FindById(vacationId).WorkerId.Add(workerId);
             UnitOFWork.Save();
         }
         public List<MVacation> GetHirerVacations(int hirerId) // Повертає список всіх ваканцій даного роботодавця
         {
-            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetByFunc(x => x.HirerId == hirerId));
+            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation.GetByFunc(x => x.HirerId == hirerId));
         }
         public List<MVacation> GetOferedVacations(int workerId) // Повертає список всіх запропонованих ваканцій даного працівника
         {
-            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetByFunc(x => x.WorkerId.Contains(workerId)));
+            return VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation.GetByFunc(x => x.WorkerId.Contains(workerId)));
         }
         // Повертає відфільтровані ваканції (якщо в jobTitle передати "none", назва роботи не буде ураховуватись, якщо в salary передати 0 заробітня плата
         // не буде ураховуватись, так само в experience, noHigherEducation відповідає чи потрібно шукати ваканцію в якій не потрібна вища освіта, якщо передати 
@@ -70,7 +71,7 @@ namespace BLL
         {
             bool isjobTitle, issalary, isexperience, isNoHigherEducation;
             List<MVacation> data = new List<MVacation>();
-            foreach (MVacation vacation in VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetData()))
+            foreach (MVacation vacation in VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation.GetData()))
             {
                 if(jobTitle != "none")
                 {
@@ -117,7 +118,7 @@ namespace BLL
         {
             List<string> data = new List<string>();
             int num = 0;
-            foreach (MVacation vacation in VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation().GetData()))
+            foreach (MVacation vacation in VacationMap.Map<List<Vacation>, List<MVacation>>(UnitOFWork.Vacation.GetData()))
             {
                 num += 1;
                 data.Add("------------------------" + num + "№------------------------");
@@ -125,7 +126,7 @@ namespace BLL
             }
             return data;
         }
-        public static List<string> GetVacationInfo(MVacation vacation)
+        public List<string> GetVacationInfo(MVacation vacation)
         {
             List<string> data = new List<string>();
             data.Add("Запрошується на роботу: " + vacation.JobTitle);

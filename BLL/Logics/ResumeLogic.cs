@@ -3,34 +3,36 @@ using DAL;
 using AutoMapper;
 using BLL.Entities;
 using DAL.Models;
+using BLL.Interfaces;
 
-namespace BLL
+namespace BLL.Logics
 {
-    public class ResumeLogic
+    public class ResumeLogic : IResumeLogic
     {
         private IMapper ResumeMap = new MapperConfiguration(cfg => cfg.CreateMap<Resume, MResume>()).CreateMapper();
-        private UnitOfWork UnitOFWork;
+        private IUnitOfWork UnitOFWork;
 
-        public ResumeLogic(UnitOfWork unitOfWork)
+        public ResumeLogic(IUnitOfWork unitOfWork)
         {
             UnitOFWork = unitOfWork;
         }
         public List<MResume> GetAll()
         {
-            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetData());
+            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume.GetData());
         }
         public MResume GetById(int id)
         {
-            return ResumeMap.Map<Resume, MResume>(UnitOFWork.Resume().FindById(id));
+            return ResumeMap.Map<Resume, MResume>(UnitOFWork.Resume.FindById(id));
         }
         public void DeleteById(int id)
         {
-            UnitOFWork.Resume().RemoveAtId(id);
+            UnitOFWork.Resume.RemoveAtId(id);
             UnitOFWork.Save();
         }
-        public void Change(Resume resume)
+        public void Change(MResume mResume)
         {
-            UnitOFWork.Resume().Update(new Resume()
+            var resume = ResumeMap.Map<MResume, Resume>(mResume);
+            UnitOFWork.Resume.Update(new Resume
             {
                 Id = resume.Id,
                 UserNames = resume.UserNames,
@@ -50,16 +52,16 @@ namespace BLL
         }
         public void OfferResume(int resumeId, int hirerId) // Передає роботодавцю резюме, використовується тільки працівником
         {
-            UnitOFWork.Resume().FindById(resumeId).HirerId.Add(hirerId);
+            UnitOFWork.Resume.FindById(resumeId).HirerId.Add(hirerId);
             UnitOFWork.Save();
         }
         public List<MResume> GetOferedResumes(int hirerId) // Повертає список всіх запропонованих резюме даного роботодавця
         {
-            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetByFunc(x => x.HirerId.Contains(hirerId)));
+            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume.GetByFunc(x => x.HirerId.Contains(hirerId)));
         }
         public List<MResume> GetWorkerResumes(int workerId) // Повертає список всіх резюме даного працівника
         {
-            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetByFunc(x => x.WorkerId == workerId));
+            return ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume.GetByFunc(x => x.WorkerId == workerId));
         }
         // Повертає відфільтровані резюме (якщо в jobTitle передати "none", назва роботи не буде ураховуватись, якщо в offeredsalary передати 0 заробітня плата
         // не буде ураховуватись, так само в experience, higherEducation відповідає чи потрібно шукати резюме в якій є вища освіта, якщо передати 
@@ -68,7 +70,7 @@ namespace BLL
         {
             bool isjobTitle, issalary, isexperience, isHigherEducation;
             List<MResume> data = new List<MResume>();
-            foreach(MResume resume in ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetData()))
+            foreach(MResume resume in ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume.GetData()))
             {
                 if (jobTitle != "none")
                 {
@@ -115,7 +117,7 @@ namespace BLL
         {
             List<string> data = new List<string>();
             int num = 0;
-            foreach(MResume resume in ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume().GetData()))
+            foreach(MResume resume in ResumeMap.Map<List<Resume>, List<MResume>>(UnitOFWork.Resume.GetData()))
             {
                 num += 1;
                 data.Add("------------------------" + num + "№------------------------");
@@ -123,7 +125,7 @@ namespace BLL
             }
             return data;
         }
-        public static List<string> GetResumeInfo(MResume resume)
+        public List<string> GetResumeInfo(MResume resume)
         {
             List<string> data = new List<string>();
             data.Add(resume.UserNames);
@@ -150,7 +152,7 @@ namespace BLL
                 data.Add("  " + line);
             return data;
         }
-        public static List<string> GetWorkSchedule(MVacation vacation) // Вивід графік роботи краще окремим меню, як доповнення
+        public List<string> GetWorkSchedule(MVacation vacation) // Вивід графік роботи краще окремим меню, як доповнення
         {
             return vacation.WorkSchedule;
         }
