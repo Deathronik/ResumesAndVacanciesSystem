@@ -15,6 +15,7 @@ namespace BLL
             Bind<IResumeLogic>().ToConstructor(x => new ResumeLogic(unitOfWork));
             Bind<IVacationLogic>().ToConstructor(x => new VacationLogic(unitOfWork));
             Bind<IWorkerLogic>().ToConstructor(x => new WorkerLogic(unitOfWork));
+            Bind<IAccountLogic>().ToConstructor(x => new AccountLogic(unitOfWork));
         }
     }
 }
