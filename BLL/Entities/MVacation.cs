@@ -16,7 +16,6 @@ namespace BLL.Entities
         public string Email { get; set; }
         public List<string> Description { get; set; }
         public string CityName { get; set; }
-        public List<string> WorkSchedule { get; set; } // Графік роботи
         public int HirerId { get; set; }
         public List<int> WorkerId { get; set; }
     }

@@ -13,7 +13,5 @@ namespace BLL.Interfaces
         List<MVacation> GetHirerVacations(int hirerId);
         List<MVacation> GetOferedVacations(int workerId);
         List<MVacation> GetFilteredData(string jobTitle, double salary, int experience, bool noHigherEducation);
-        List<string> GetAllInfo();
-        List<string> GetVacationInfo(MVacation vacation);
     }
 }

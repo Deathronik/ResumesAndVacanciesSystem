@@ -48,7 +48,7 @@ namespace BLL.Logics
         public void CreateVacation(int hirerID, MVacation vacation)
         {
             MHirer hirer = GetById(hirerID);
-            HirerMap.Map<Hirer>(UnitOFWork.Hirer.FindById(hirerID)).Vacations.Add(new Vacation()
+            UnitOFWork.Vacation.Add(new Vacation()
             {
                 CompanyName = hirer.CompanyName,
                 HirerNames = hirer.Names,
@@ -61,7 +61,7 @@ namespace BLL.Logics
                 Email = hirer.Email,
                 Description = vacation.Description,
                 CityName = vacation.CityName,
-                WorkSchedule = vacation.WorkSchedule
+                HirerId = hirer.Id
             });
             UnitOFWork.Save();
         }
@@ -77,15 +77,6 @@ namespace BLL.Logics
                 Resume = new List<Resume>()
             });
             UnitOFWork.Save();
-        }
-        public List<string> GetInfo(MHirer hirer)
-        {
-            List<string> data = new List<string>();
-            data.Add("Роботодавець: " + hirer.Names);
-            data.Add("Назва компанії: " + hirer.CompanyName);
-            data.Add("Номер телефону: " + hirer.PhoneNumber);
-            data.Add("Електронна пошта: " + hirer.Email);
-            return data;
         }
     }
 }

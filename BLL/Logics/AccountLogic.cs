@@ -7,7 +7,7 @@ using DAL.Models;
 
 namespace BLL.Logics
 {
-    class AccountLogic : IAccountLogic
+    public class AccountLogic : IAccountLogic
     {
         private IUnitOfWork UnitOFWork;
         private IMapper HirerMap = new MapperConfiguration(cfg => cfg.CreateMap<Hirer, MHirer>()).CreateMapper();

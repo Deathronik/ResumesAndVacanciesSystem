@@ -19,7 +19,11 @@ namespace BLLTesting.Mocks
         }
         public List<Resume> GetByFunc(Func<Resume, bool> predicate)
         {
-            return null;
+            List<Resume> resumes = new List<Resume>();
+            foreach (Resume resume in Resumes)
+                if (predicate(resume))
+                    resumes.Add(resume);
+            return resumes;
         }
         public List<Resume> GetData()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using DAL;
 using DAL.Models;
@@ -19,7 +20,11 @@ namespace BLLTesting.Mocks
         }
         public List<Vacation> GetByFunc(Func<Vacation, bool> predicate)
         {
-            return null;
+            List<Vacation> vacations = new List<Vacation>();
+            foreach (Vacation vacation in Vacations)
+                if (predicate(vacation))
+                    vacations.Add(vacation);
+            return vacations;
         }
         public List<Vacation> GetData()
         {

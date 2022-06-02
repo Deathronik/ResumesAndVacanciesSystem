@@ -76,14 +76,5 @@ namespace BLL.Logics
             });
             UnitOFWork.Save();
         }
-        public List<string> GetWorkerInfo(MWorker worker)
-        {
-            List<string> data = new List<string>();
-            data.Add("Працівник: " + worker.Names);
-            data.Add("Дата народження: " + worker.DateOfBirth);
-            data.Add("Номер телефону: " + worker.PhoneNumber);
-            data.Add("Електронна пошта: " + worker.Email);
-            return data;
-        }
     }
 }

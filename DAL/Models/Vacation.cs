@@ -16,7 +16,6 @@ namespace DAL.Models
         public string Email { get; set; }
         public List<string> Description { get; set; }
         public string CityName { get; set; }
-        public List<string> WorkSchedule { get; set; }
         public int HirerId { get; set; }
         public List<int> WorkerId { get; set; }
     }
