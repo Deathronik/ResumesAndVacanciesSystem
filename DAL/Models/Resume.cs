@@ -13,8 +13,8 @@ namespace DAL.Models
         public bool IsHigherEducation { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public List<string> Description { get; set; }
-        public List<string> CharacterInfo { get; set; }
+        public string Description { get; set; }
+        public string CharacterInfo { get; set; }
         public int WorkerId { get; set; }
         public List<int> HirerId { get; set; }
     }

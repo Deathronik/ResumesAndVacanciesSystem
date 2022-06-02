@@ -45,7 +45,6 @@ namespace BLL.Logics
                 Email = vacation.Email,
                 Description = vacation.Description,
                 CityName = vacation.CityName,
-                WorkSchedule = vacation.WorkSchedule,
                 HirerId = vacation.HirerId,
                 WorkerId = vacation.WorkerId
             });
@@ -147,11 +146,6 @@ namespace BLL.Logics
                 data.Add("  Потрібна вища освіта");
             else
                 data.Add("  Вища освіта не потрібна");
-            data.Add("Додаткова інформація:");
-            data.AddRange(vacation.Description);
-            data.Add("Контактна інформація:");
-            data.Add("  Номер телефону: " + vacation.PhoneNumber);
-            data.Add("  Електронна пошта: " + vacation.Email);
             return data;
         }
     }

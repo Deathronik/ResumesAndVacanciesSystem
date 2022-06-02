@@ -15,6 +15,5 @@ namespace BLL.Interfaces
         List<MResume> GetFilteredResume(string jobTitle, double offeredsalary, int experience, bool higherEducation);
         List<string> GetAllInfo();
         List<string> GetResumeInfo(MResume resume);
-        List<string> GetWorkSchedule(MVacation vacation);
     }
 }
