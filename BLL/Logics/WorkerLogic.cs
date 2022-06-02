@@ -59,7 +59,8 @@ namespace BLL.Logics
                 Email = worker.Email,
                 Description = resume.Description,
                 CharacterInfo = resume.CharacterInfo,
-                WorkerId = worker.Id
+                WorkerId = worker.Id,
+                HirerId = new List<int>()
             });
             UnitOFWork.Save();
         }
@@ -71,6 +72,7 @@ namespace BLL.Logics
                 PhoneNumber = worker.PhoneNumber,
                 Email = worker.Email,
                 DateOfBirth = worker.DateOfBirth,
+                Password = worker.Password,
                 Resumes = new List<Resume>(),
                 Vacations = new List<Vacation>()
             });

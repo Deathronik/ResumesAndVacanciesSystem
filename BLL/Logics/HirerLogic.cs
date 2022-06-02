@@ -40,6 +40,7 @@ namespace BLL.Logics
                 Names = hirer.Names,
                 PhoneNumber = hirer.PhoneNumber,
                 Email = hirer.Email,
+                Password = hirer.Password,
                 Vacations = HirerMap.Map<List<Vacation>>(hirer.Vacations),
                 Resume = HirerMap.Map<List<Resume>>(hirer.Resume)
             });
@@ -61,7 +62,8 @@ namespace BLL.Logics
                 Email = hirer.Email,
                 Description = vacation.Description,
                 CityName = vacation.CityName,
-                HirerId = hirer.Id
+                HirerId = hirer.Id,
+                WorkerId = new List<int>()
             });
             UnitOFWork.Save();
         }
@@ -73,6 +75,7 @@ namespace BLL.Logics
                 Names = hirer.Names,
                 PhoneNumber = hirer.PhoneNumber,
                 Email = hirer.Email,
+                Password = hirer.Password,
                 Vacations = new List<Vacation>(),
                 Resume = new List<Resume>()
             });

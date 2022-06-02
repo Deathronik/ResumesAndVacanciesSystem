@@ -14,7 +14,7 @@ namespace BLL.Entities
         public bool IsHigherEducation { get; set; } // Чи потрібна вища освіта
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public List<string> Description { get; set; }
+        public string Description { get; set; }
         public string CityName { get; set; }
         public int HirerId { get; set; }
         public List<int> WorkerId { get; set; }

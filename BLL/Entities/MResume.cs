@@ -13,8 +13,8 @@ namespace BLL.Entities
         public bool IsHigherEducation { get; set; } // Чи є вища освіта
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public List<string> Description { get; set; } // Описується де і коли працював/отримав освіту + біографія
-        public List<string> CharacterInfo { get; set; } // Характеристика людини
+        public string Description { get; set; } // Описується де і коли працював/отримав освіту + біографія
+        public string CharacterInfo { get; set; } // Характеристика людини
         public int WorkerId { get; set; }
         public List<int> HirerId { get; set; }
     }

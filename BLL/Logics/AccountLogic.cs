@@ -29,6 +29,7 @@ namespace BLL.Logics
                     PhoneNumber = haccount.PhoneNumber,
                     Email = haccount.Email,
                     Password = haccount.Password,
+                    AccountType = 1
                 };
             }
             else
@@ -43,6 +44,7 @@ namespace BLL.Logics
                         PhoneNumber = waccount.PhoneNumber,
                         Email = waccount.Email,
                         Password = waccount.Password,
+                        AccountType = 2
                     };
                 }
                 else
