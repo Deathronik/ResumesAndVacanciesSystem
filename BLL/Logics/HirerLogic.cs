@@ -81,14 +81,5 @@ namespace BLL.Logics
             });
             UnitOFWork.Save();
         }
-        public List<string> GetInfo(MHirer hirer)
-        {
-            List<string> data = new List<string>();
-            data.Add("Роботодавець: " + hirer.Names);
-            data.Add("Назва компанії: " + hirer.CompanyName);
-            data.Add("Номер телефону: " + hirer.PhoneNumber);
-            data.Add("Електронна пошта: " + hirer.Email);
-            return data;
-        }
     }
 }

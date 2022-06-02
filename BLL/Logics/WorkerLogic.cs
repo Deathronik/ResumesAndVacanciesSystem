@@ -74,19 +74,11 @@ namespace BLL.Logics
                 Email = worker.Email,
                 Password = worker.Password,
                 DateOfBirth = worker.DateOfBirth,
+                Password = worker.Password,
                 Resumes = new List<Resume>(),
                 Vacations = new List<Vacation>()
             });
             UnitOFWork.Save();
-        }
-        public List<string> GetWorkerInfo(MWorker worker)
-        {
-            List<string> data = new List<string>();
-            data.Add("Працівник: " + worker.Names);
-            data.Add("Дата народження: " + worker.DateOfBirth);
-            data.Add("Номер телефону: " + worker.PhoneNumber);
-            data.Add("Електронна пошта: " + worker.Email);
-            return data;
         }
     }
 }

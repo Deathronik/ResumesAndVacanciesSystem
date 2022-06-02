@@ -11,6 +11,5 @@ namespace BLL.Interfaces
         void Change(MHirer hirer);
         void CreateVacation(int hirerID, MVacation vacation);
         void Create(MHirer hirer);
-        List<string> GetInfo(MHirer hirer);
     }
 }

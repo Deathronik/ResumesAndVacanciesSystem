@@ -11,6 +11,5 @@ namespace BLL.Interfaces
         void Change(MWorker worker);
         void CreateResume(int workerID, MResume resume);
         void Create(MWorker worker);
-        List<string> GetWorkerInfo(MWorker worker);
     }
 }

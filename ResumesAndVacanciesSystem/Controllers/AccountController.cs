@@ -7,7 +7,6 @@ namespace ResumesAndVacanciesSystem.Controllers
     public class AccountController : ApiController
     {
         private readonly IAccountLogic accountLogic;
-
         public AccountController(IAccountLogic accountLogic)
         {
             this.accountLogic = accountLogic;
