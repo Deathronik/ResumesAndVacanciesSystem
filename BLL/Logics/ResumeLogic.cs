@@ -144,17 +144,7 @@ namespace BLL.Logics
                 data.Add("  Має вищу освіту");
             else
                 data.Add("  Без вищої освіти");
-            data.Add("Характеристика і навички:");
-            foreach (string line in resume.CharacterInfo)
-                data.Add("  " + line);
-            data.Add("Біографія:");
-            foreach (string line in resume.Description)
-                data.Add("  " + line);
             return data;
-        }
-        public List<string> GetWorkSchedule(MVacation vacation) // Вивід графік роботи краще окремим меню, як доповнення
-        {
-            return vacation.WorkSchedule;
         }
     }
 }
