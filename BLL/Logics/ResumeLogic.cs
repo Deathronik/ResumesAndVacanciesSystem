@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DAL;
 using AutoMapper;
 using BLL.Entities;

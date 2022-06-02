@@ -38,6 +38,7 @@ namespace BLL.Logics
                 Names = worker.Names,
                 PhoneNumber = worker.PhoneNumber,
                 Email = worker.Email,
+                Password = worker.Password,
                 DateOfBirth = worker.DateOfBirth,
                 Resumes = WorkerMap.Map<List<Resume>>(worker.Resumes),
                 Vacations = WorkerMap.Map<List<Vacation>>(worker.Vacations)
@@ -71,6 +72,7 @@ namespace BLL.Logics
                 Names = worker.Names,
                 PhoneNumber = worker.PhoneNumber,
                 Email = worker.Email,
+                Password = worker.Password,
                 DateOfBirth = worker.DateOfBirth,
                 Password = worker.Password,
                 Resumes = new List<Resume>(),

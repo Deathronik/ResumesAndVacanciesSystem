@@ -1,4 +1,4 @@
-﻿using BLL.Entities;
+using BLL.Entities;
 using System.Collections.Generic;
 
 namespace BLL.Interfaces
